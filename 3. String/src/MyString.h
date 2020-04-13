@@ -20,6 +20,7 @@ public:
     MyString(PCHAR input = nullptr);
 
     int getLength() const ;
+    int getSize() const; 
     void reserve(int i);
     void empty();
     void free();
@@ -27,6 +28,7 @@ public:
     void setAt(int i, char a);
     
     char operator [] (int i) const;
+    friend std::ostream & operator << (std::ostream& os, const MyString & str);
 
     ~MyString();
 };

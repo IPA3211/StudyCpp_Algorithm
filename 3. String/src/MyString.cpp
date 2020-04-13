@@ -1,4 +1,5 @@
 #include "MyString.h"
+#include <iostream>
 #include <cassert>
 
 MyString::MyString(PCHAR input){
@@ -19,6 +20,10 @@ void MyString::_init(PCHAR input){
 
 int MyString::getLength() const {
     return _length;
+}
+
+int MyString::getSize() const {
+    return _size;
 }
 
 void MyString::reserve(int i){
@@ -48,25 +53,32 @@ void MyString::free(){
 }
 
 char MyString::getAt(int i) const {
-    assert(_length >= i);
     return _buffer[i];
 }
 
 void MyString::setAt(int i, char a){
     assert(_size >= i);
-    if(_length > i){
-        _length = i;
-        for(int j = i ; j < _length; j++){
+    if(_length < i){
+        for(int j = _length ; j < i; j++){
             _buffer[j] = ' ';
         }
+        _length = i;
     }
 
     _buffer[i] = a;
 }
 
 char MyString::operator[](int i) const {
-    assert(_length >= i);
     return getAt(i);
+}
+
+MyString::~MyString(){
+    delete [] _buffer;
+}
+
+std::ostream & operator << (std::ostream& os, const MyString & str){
+    os << str._buffer;
+    return os;
 }
 
 int cus::strlen(PCHAR str){
@@ -79,6 +91,6 @@ int cus::strlen(PCHAR str){
 int cus::strlen(MyString str){
     for(int i = 0; ; i++){
         if(str[i] == '\0')
-            return i;
+            return i - 1;
     }
 }
