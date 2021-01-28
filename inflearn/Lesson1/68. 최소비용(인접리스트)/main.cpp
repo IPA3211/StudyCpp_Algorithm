@@ -5,12 +5,13 @@
 #include <limits>
 
 int Inputnum = 0;
-int answer = 0;
-std::vector<int> data[20];
+int answer = INT_MAX;
+std::vector<std::pair<int, int>> data[20];
 
-void search(int in, std::vector<int> root) {
+void search(int in, int distance, std::vector<int> root) {
 	if (in == Inputnum - 1) {
-		answer++;
+		if(answer > distance)
+		answer = distance;
 		return;
 	}
 
@@ -22,7 +23,7 @@ void search(int in, std::vector<int> root) {
 	root.push_back(in);
 
 	for (int i = 0; i < data[in].size(); i++) {
-		search(data[in].at(i), root);
+		search(data[in].at(i).first, distance + data[in].at(i).second, root);
 	}
 
 }
@@ -35,17 +36,19 @@ int main(void) {
 
 	int tempFrom;
 	int tempTo;
+	int tempDis;
 
 	for (int i = 0; i < inputLine; i++) {
 		std::cin >> tempFrom;
 		std::cin >> tempTo;
+		std::cin >> tempDis;
 
-		data[tempFrom - 1].push_back(tempTo - 1);
+		data[tempFrom - 1].push_back(std::make_pair(tempTo - 1, tempDis));
 	}
 	
 	std::vector<int> root;
 
-	search(0, root);
+	search(0, 0, root);
 
 	std::cout << answer;
 
